@@ -1,9 +1,9 @@
 package by.ita.je.models;
 
-import by.ita.je.models.Category;
-import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -15,7 +15,16 @@ import java.util.List;
 @Entity
 public class Course {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(generator = "sequence-generator")
+    @GenericGenerator(
+            name = "sequence-generator",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "course_sequence"),
+                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "5"),
+                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "1")
+            }
+    )
     private Integer number;
     private String name;
     private String location;
@@ -24,7 +33,7 @@ public class Course {
     private ZonedDateTime start;
     private ZonedDateTime stop;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "course_student",
             joinColumns = @JoinColumn(name = "course_number"),
@@ -34,9 +43,11 @@ public class Course {
 
     @ToString.Exclude
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinColumn(name = "teacher_number")
     private Teacher teacher;
 
-    @OneToOne
+    @ToString.Exclude
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     @JoinColumn(name = "category_number")
     private Category category;
 }

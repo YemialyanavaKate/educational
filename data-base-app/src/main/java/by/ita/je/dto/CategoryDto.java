@@ -1,8 +1,9 @@
 package by.ita.je.dto;
 
 import by.ita.je.mappers.CategoryConverter;
-import jakarta.persistence.*;
 import lombok.*;
+
+import javax.persistence.Convert;
 
 
 @Data
@@ -11,16 +12,14 @@ import lombok.*;
 @AllArgsConstructor
 public class CategoryDto {
 
-    private Integer id;
+    private Integer number;
     @Convert(converter = CategoryConverter.class)
     private CategoryEnum category;
 
     @Getter
     public enum CategoryEnum {
-        AI(1),
-        JAVA(2),
-        IT_HR(3),
-        PYTHON(4);
+        IT(1),
+        MANAGEMENT(2);
 
         private Integer code;
 
@@ -29,5 +28,5 @@ public class CategoryDto {
         }
     }
 
-    private CourseDto courseDto;
+    private CourseDto course;
 }

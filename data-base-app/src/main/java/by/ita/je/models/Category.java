@@ -1,8 +1,10 @@
 package by.ita.je.models;
 
 import by.ita.je.mappers.CategoryConverter;
-import jakarta.persistence.*;
 import lombok.*;
+
+import javax.persistence.*;
+import java.util.List;
 
 
 @Data
@@ -13,25 +15,23 @@ import lombok.*;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private Integer number;
 
     @Convert(converter = CategoryConverter.class)
     private CategoryEnum category;
 
     @Getter
     public enum CategoryEnum {
-        AI(1),
-        JAVA(2),
-        IT_HR(3),
-        PYTHON(4);
+        IT("IT"),
+        MANAGEMENT("MANAGEMENT");
 
-        private Integer code;
+        private String code;
 
-        CategoryEnum(Integer code) {
+        CategoryEnum(String code) {
             this.code = code;
         }
     }
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Course course;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
+    private List<Course> courses;
 }
