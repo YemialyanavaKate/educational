@@ -1,6 +1,4 @@
 package by.ita.je.dto;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +14,8 @@ public class TeacherDto {
     private Integer number;
     private String name;
     private String surname;
-    @JsonIgnore
+    private String login;
+    private String password;
+    private String role;
     private List<CourseDto> courses;
 }

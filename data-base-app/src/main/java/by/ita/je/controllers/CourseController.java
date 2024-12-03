@@ -1,71 +1,52 @@
 package by.ita.je.controllers;
 
 
-import by.ita.je.dto.CategoryDto;
 import by.ita.je.dto.CourseDto;
-import by.ita.je.mappers.CategoryConverter;
-import by.ita.je.mappers.CategoryMapper;
-import by.ita.je.models.Category;
-import lombok.RequiredArgsConstructor;
+import by.ita.je.mappers.CourseMapper;
+import by.ita.je.models.Course;
+import by.ita.je.services.CourseService;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
+@AllArgsConstructor
 @RequestMapping("/database/course")
 public class CourseController {
+    private final CourseService courseService;
+    private final CourseMapper courseMapper;
 
     @PostMapping("/create")
-    public CourseDto create(){
-       return CourseDto.builder()
-               .name("java")
-               .number(10)
-               .build();
+    public CourseDto create(@RequestBody CourseDto courseDto) {
+        Course course = courseMapper.toEntity(courseDto);
+        Course courseCreate = courseService.insert(course);
+        return courseMapper.toDTO(courseCreate);
     }
 
-    @GetMapping("/read")
-    public CourseDto read(){
-        return CourseDto.builder()
-                .name("IT_HR")
-                .number(11)
-                .build();
+    @GetMapping("/read/{number}")
+    public CourseDto read(@PathVariable(name = "number") Integer number) {
+        return courseMapper.toDTO(courseService.findByNumber(number));
     }
 
     @GetMapping("/read/all")
-    public List<CourseDto> readAll(){
-        CourseDto courseDto1 = CourseDto.builder()
-                .name("java")
-                .number(10)
-                .build();
-        CourseDto courseDto2 = CourseDto.builder()
-                .name("IT_HR")
-                .number(11)
-                .build();
-        List<CourseDto> list = new ArrayList<>();
-        list.add(courseDto1);
-        list.add(courseDto2);
-        return list;
+    public List<CourseDto> readAll() {
+        return courseService.readAll().stream().map(courseMapper::toDTO).toList();
     }
 
     @PutMapping("/update")
-    public CourseDto update(){
-        return CourseDto.builder()
-                .name("java+")
-                .number(10)
-                .build();
+    public CourseDto update(@RequestBody CourseDto courseDto) {
+        Course course = courseMapper.toEntity(courseDto);
+        return courseMapper.toDTO(courseService.update(course));
     }
-    @DeleteMapping("/delete")
-    public CourseDto delete(){
-        return CourseDto.builder()
-                .name("java")
-                .number(10)
-                .build();
+
+    @DeleteMapping("/delete/{number}")
+    public CourseDto delete(@PathVariable(name = "number") Integer number) {
+        return courseMapper.toDTO(courseService.delete(number));
     }
+
     @DeleteMapping("/delete/all")
-    public List<CourseDto> deleteAll(){
-        return Collections.emptyList();
+    public List<CourseDto> deleteAll() {
+        return courseService.deleteAll().stream().map(courseMapper::toDTO).toList();
     }
 }

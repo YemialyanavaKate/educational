@@ -2,66 +2,51 @@ package by.ita.je.controllers;
 
 
 import by.ita.je.dto.StudentDto;
+import by.ita.je.mappers.StudentMapper;
+import by.ita.je.models.Student;
+import by.ita.je.services.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/database/student")
 public class StudentController {
+    private final StudentService studentService;
+    private final StudentMapper studentMapper;
 
     @PostMapping("/create")
-    public StudentDto create(){
-       return StudentDto.builder()
-               .name("Ivan")
-               .number(10)
-               .build();
+    public StudentDto create(@RequestBody StudentDto studentDto) {
+        Student student = studentMapper.toEntity(studentDto);
+        Student studentCreate = studentService.insert(student);
+        return studentMapper.toDto(studentCreate);
     }
 
-    @GetMapping("/read")
-    public StudentDto read(){
-        return StudentDto.builder()
-                .name("Anne")
-                .number(11)
-                .build();
+    @GetMapping("/read/{number}")
+    public StudentDto read(@PathVariable(name = "number") Integer number) {
+        return studentMapper.toDto(studentService.findByNumber(number));
     }
 
     @GetMapping("/read/all")
-    public List<StudentDto> readAll(){
-        StudentDto courseDto1 = StudentDto.builder()
-                .name("Ivan")
-                .number(10)
-                .build();
-        StudentDto courseDto2 = StudentDto.builder()
-                .name("Anne")
-                .number(11)
-                .build();
-        List<StudentDto> list = new ArrayList<>();
-        list.add(courseDto1);
-        list.add(courseDto2);
-        return list;
+    public List<StudentDto> readAll() {
+        return studentService.readAll().stream().map(studentMapper::toDto).toList();
     }
 
     @PutMapping("/update")
-    public StudentDto update(){
-        return StudentDto.builder()
-                .name("Ivan+")
-                .number(10)
-                .build();
+    public StudentDto update(@RequestBody StudentDto studentDto) {
+        Student student = studentMapper.toEntity(studentDto);
+        return studentMapper.toDto(studentService.update(student));
     }
-    @DeleteMapping("/delete")
-    public StudentDto delete(){
-        return StudentDto.builder()
-                .name("Ivan+")
-                .number(10)
-                .build();
+
+    @DeleteMapping("/delete/{number}")
+    public StudentDto delete(@PathVariable(name = "number") Integer number) {
+        return studentMapper.toDto(studentService.delete(number));
     }
+
     @DeleteMapping("/delete/all")
-    public List<StudentDto> deleteAll(){
-        return Collections.emptyList();
+    public List<StudentDto> deleteAll() {
+        return studentService.deleteAll().stream().map(studentMapper::toDto).toList();
     }
 }

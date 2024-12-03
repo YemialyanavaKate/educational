@@ -8,52 +8,44 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 public class CategoryMapper {
-    public CategoryDto toDto(Category category){
+    public CategoryDto toDto(Category category) {
         return CategoryDto.builder()
-                .id(category.getId())
+                .number(category.getNumber())
                 .category(categoryEnumToDto(category.getCategory()))
                 .build();
     }
 
-    public Category toEntity(CategoryDto categoryDto){
+    public Category toEntity(CategoryDto categoryDto) {
         return Category.builder()
-                .id(categoryDto.getId())
+                .number(categoryDto.getNumber())
                 .category(categoryEnumToEntity(categoryDto.getCategory()))
                 .build();
 
     }
 
-    public CategoryDto.CategoryEnum categoryEnumToDto (Category.CategoryEnum categoryEnum){
-        if (categoryEnum == null){
+    public CategoryDto.CategoryEnum categoryEnumToDto(Category.CategoryEnum categoryEnum) {
+        if (categoryEnum == null) {
             return null;
         }
-        switch (categoryEnum){
-            case AI:
-                return CategoryDto.CategoryEnum.AI;
-            case JAVA:
-                return CategoryDto.CategoryEnum.JAVA;
-            case IT_HR:
-                return CategoryDto.CategoryEnum.IT_HR;
-            case PYTHON:
-                return CategoryDto.CategoryEnum.PYTHON;
+        switch (categoryEnum) {
+            case IT:
+                return CategoryDto.CategoryEnum.IT;
+            case MANAGEMENT:
+                return CategoryDto.CategoryEnum.MANAGEMENT;
             default:
                 throw new IllegalArgumentException("Unknown category: " + categoryEnum);
         }
     }
 
-    public Category.CategoryEnum categoryEnumToEntity (CategoryDto.CategoryEnum categoryEnum){
-        if (categoryEnum == null){
+    public Category.CategoryEnum categoryEnumToEntity(CategoryDto.CategoryEnum categoryEnum) {
+        if (categoryEnum == null) {
             return null;
         }
-        switch (categoryEnum){
-            case AI:
-                return Category.CategoryEnum.AI;
-            case JAVA:
-                return Category.CategoryEnum.JAVA;
-            case IT_HR:
-                return Category.CategoryEnum.IT_HR;
-            case PYTHON:
-                return Category.CategoryEnum.PYTHON;
+        switch (categoryEnum) {
+            case IT:
+                return Category.CategoryEnum.IT;
+            case MANAGEMENT:
+                return Category.CategoryEnum.MANAGEMENT;
             default:
                 throw new IllegalArgumentException("Unknown category: " + categoryEnum);
         }

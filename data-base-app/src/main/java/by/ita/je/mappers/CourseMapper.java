@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class CourseMapper {
     private StudentMapper studentMapper;
+
     private TeacherMapper teacherMapper;
     private CategoryMapper categoryMapper;
 
@@ -30,7 +31,6 @@ public class CourseMapper {
                         .map(studentMapper::toDto)
                         .collect(Collectors.toList()) :
                 Collections.emptyList();
-
         TeacherDto teacherDto = course.getTeacher() != null ?
                 teacherMapper.toDto(course.getTeacher()) : null;
         CategoryDto categoryDto = course.getCategory() != null ?
@@ -38,6 +38,7 @@ public class CourseMapper {
 
         return CourseDto.builder()
                 .number(course.getNumber())
+                .name(course.getName())
                 .location(course.getLocation())
                 .price(course.getPrice())
                 .duration(course.getDuration())
@@ -54,7 +55,7 @@ public class CourseMapper {
         List<Student> students = courseDto.getStudents() != null ?
                 courseDto.getStudents().stream()
                         .map(studentMapper::toEntity)
-                        .collect(Collectors.toList())
+                        .toList()
                 : Collections.emptyList();
         Teacher teacher = courseDto.getTeacher() != null ?
                 teacherMapper.toEntity(courseDto.getTeacher()) : null;
@@ -62,6 +63,7 @@ public class CourseMapper {
                 categoryMapper.toEntity(courseDto.getCategory()) : null;
         return Course.builder()
                 .number(courseDto.getNumber())
+                .name(courseDto.getName())
                 .location(courseDto.getLocation())
                 .price(courseDto.getPrice())
                 .duration(courseDto.getDuration())
