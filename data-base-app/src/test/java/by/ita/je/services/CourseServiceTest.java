@@ -216,4 +216,58 @@ class CourseServiceTest extends TestUtils {
 
         verify(courseCrudRepository, new Times(1)).deleteAll();
     }
+
+    @Test
+    void findByCategory_then_return() {
+        Course testCourse1 = buildCourse(1, "AI","Minsk", BigDecimal.valueOf(3000), 4, ZonedDateTime.parse("2024-01-10T10:00:00+02"), ZonedDateTime.parse("2024-05-10T10:00:00+02"));
+        Course testCourse2 = buildCourse(2, "JAVA","Minsk", BigDecimal.valueOf(5000), 4, ZonedDateTime.parse("2024-01-10T10:00:00+02"), ZonedDateTime.parse("2024-05-10T10:00:00+02"));
+
+        List<Course> testList = new ArrayList<>(Arrays.asList(testCourse1, testCourse2));
+
+        when(courseCrudRepository.findByCategory(1))
+                .thenReturn(testList);
+
+        List<Course> actualList = courseService.findByCategory(1);
+
+        assertEquals(actualList, testList);
+
+        Mockito.verify(
+                courseCrudRepository, new Times(1)).findByCategory(1);
+    }
+
+    @Test
+    void findByPrice_then_return() {
+        Course testCourse1 = buildCourse(1, "AI","Minsk", BigDecimal.valueOf(1000), 4, ZonedDateTime.parse("2024-01-10T10:00:00+02"), ZonedDateTime.parse("2024-05-10T10:00:00+02"));
+        Course testCourse2 = buildCourse(2, "JAVA","Minsk", BigDecimal.valueOf(500), 4, ZonedDateTime.parse("2024-01-10T10:00:00+02"), ZonedDateTime.parse("2024-05-10T10:00:00+02"));
+
+        List<Course> testList = new ArrayList<>(Arrays.asList(testCourse1, testCourse2));
+
+        when(courseCrudRepository.findByPrice(1000))
+                .thenReturn(testList);
+
+        List<Course> actualList = courseService.findByPrice(1000);
+
+        assertEquals(actualList, testList);
+
+        Mockito.verify(
+                courseCrudRepository, new Times(1)).findByPrice(1000);
+    }
+
+    @Test
+    void findByDuration_then_return() {
+        Course testCourse1 = buildCourse(1, "AI","Minsk", BigDecimal.valueOf(1000), 4, ZonedDateTime.parse("2024-01-10T10:00:00+02"), ZonedDateTime.parse("2024-05-10T10:00:00+02"));
+        Course testCourse2 = buildCourse(2, "JAVA","Minsk", BigDecimal.valueOf(500), 3, ZonedDateTime.parse("2024-01-10T10:00:00+02"), ZonedDateTime.parse("2024-05-10T10:00:00+02"));
+
+        List<Course> testList = new ArrayList<>(Arrays.asList(testCourse1, testCourse2));
+
+        when(courseCrudRepository.findByDuration(4))
+                .thenReturn(testList);
+
+        List<Course> actualList = courseService.findByDuration(4);
+
+        assertEquals(actualList, testList);
+
+        Mockito.verify(
+                courseCrudRepository, new Times(1)).findByDuration(4);
+    }
 }

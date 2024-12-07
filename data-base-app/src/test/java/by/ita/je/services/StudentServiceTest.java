@@ -217,4 +217,25 @@ class StudentServiceTest extends TestUtils {
 
         verify(studentCrudRepository, new Times(1)).deleteAll();
     }
+
+
+
+    @Test
+    void findAllStudentsByCourse_then_return() {
+        Integer number = 2;
+        Student testStudent1 = buildStudent(1, "Anne", "Fox", "Anne", "123", "student");
+        Student testStudent2 = buildStudent(2, "Tom", "Cruise", "Tom", "456", "student");
+
+        List<Student> testList = new ArrayList<>(Arrays.asList(testStudent1, testStudent2));
+
+        when(studentCrudRepository.findStudentsByCourse(number))
+                .thenReturn(testList);
+
+        List<Student> actualList = studentService.findAllStudentsByCourse(2);
+
+        assertEquals(actualList, testList);
+
+        Mockito.verify(
+                studentCrudRepository, new Times(1)).findStudentsByCourse(number);
+    }
 }

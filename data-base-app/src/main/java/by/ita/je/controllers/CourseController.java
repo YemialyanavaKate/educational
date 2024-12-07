@@ -49,4 +49,19 @@ public class CourseController {
     public List<CourseDto> deleteAll() {
         return courseService.deleteAll().stream().map(courseMapper::toDTO).toList();
     }
+
+    @GetMapping("/filter/category")
+    public List<CourseDto> filterCategory(@RequestParam Integer numberCategory) {
+        return courseService.findByCategory(numberCategory).stream().map(courseMapper::toDTO).toList();
+    }
+
+    @GetMapping("/filter/price")
+    public List<CourseDto> filterPrice(@RequestParam Integer price) {
+        return courseService.findByPrice(price).stream().map(courseMapper::toDTO).toList();
+    }
+
+    @GetMapping("/filter/duration")
+    public List<CourseDto> filterDuration(@RequestParam Integer duration) {
+        return courseService.findByDuration(duration).stream().map(courseMapper::toDTO).toList();
+    }
 }
