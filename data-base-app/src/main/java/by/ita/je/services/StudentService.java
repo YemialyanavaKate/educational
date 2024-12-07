@@ -49,4 +49,9 @@ public class StudentService {
         studentCrudRepository.deleteAll();
         return readAll();
     }
+
+    public List<Student> findAllStudentsByCourse(Integer number) {
+        return StreamSupport.stream((studentCrudRepository.findStudentsByCourse(number)).spliterator(), false)
+                .collect(Collectors.toList());
+    }
 }

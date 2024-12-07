@@ -51,4 +51,19 @@ public class CourseService {
         courseCrudRepository.deleteAll();
         return readAll();
     }
+
+    public List<Course> findByCategory(Integer categoryNumber) {
+        Iterable<Course> byCategory = courseCrudRepository.findByCategory(categoryNumber);
+        return StreamSupport.stream(byCategory.spliterator(), false).toList();
+    }
+
+    public List<Course> findByPrice(Integer price) {
+        Iterable<Course> byPrice = courseCrudRepository.findByPrice(price);
+        return StreamSupport.stream(byPrice.spliterator(), false).collect(Collectors.toList());
+    }
+
+    public List<Course> findByDuration(Integer duration) {
+        Iterable<Course> byDuration = courseCrudRepository.findByDuration(duration);
+        return StreamSupport.stream(byDuration.spliterator(), false).collect(Collectors.toList());
+    }
 }

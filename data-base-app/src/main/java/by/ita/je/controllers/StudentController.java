@@ -49,4 +49,9 @@ public class StudentController {
     public List<StudentDto> deleteAll() {
         return studentService.deleteAll().stream().map(studentMapper::toDto).toList();
     }
+
+    @GetMapping("/filter/course")
+    public List<StudentDto> findByCourse(Integer number) {
+        return studentService.findAllStudentsByCourse(number).stream().map(studentMapper::toDto).toList();
+    }
 }
