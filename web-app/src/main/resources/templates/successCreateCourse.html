@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <title>Great</title>
+</head>
+<body>
+<h1>Course successfully created!</h1>
+<img th:src="@{/images/successAddC.png}"/><br>
+<p><strong>Course Title:</strong> <span th:text="${course.name}"></span></p>
+<p><strong>Course location:</strong> <span th:text="${course.location}"></span></p>
+<p><strong>Price of the course:</strong> <span th:text="${course.price}"></span></p>
+<p><strong>Course duration:</strong> <span th:text="${course.duration}"></span></p>
+
+<a th:href="@{/course/create}" id="create">
+    <button type="button">Create another course</button><br><br>
+</a>
+
+</body>
+</html>
