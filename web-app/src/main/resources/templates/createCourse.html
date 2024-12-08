@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <title>Creating a new course</title>
+</head>
+<body>
+<h1>Creating a new course</h1>
+<h2>Please enter details</h2>
+<img th:src="@{/images/data.png}"/><br>
+
+<form th:action="@{/course/create}" th:object="${course}" method="post">
+
+    <label for="name">Course Title:</label>
+    <input type="text" id="name" th:field="*{name}"/><br><br>
+
+    <label for="location">Course location:</label>
+    <input type="text" id="location" th:field="*{location}"/><br><br>
+
+    <label for="price">Price of the course:</label>
+    <input type="number" id="price" th:field="*{price}"/><br><br>
+
+    <label for="duration">Course duration:</label>
+    <input type="number" id="duration" th:field="*{duration}"/><br><br>
+
+    <button type="submit">Create</button><br><br>
+
+</form>
+</body>
+</html>
