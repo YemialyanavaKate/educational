@@ -3,10 +3,14 @@ package by.ita.je.controller;
 import by.ita.je.dto.to_data_base.CourseDto;
 import by.ita.je.dto.to_web.CourseWebDto;
 import by.ita.je.dto.to_web.RegistrationWebDto;
+import by.ita.je.dto.to_web.TeacherWebDto;
 import by.ita.je.mappers.CourseMapper;
 import by.ita.je.mappers.RegistrationMapper;
+import by.ita.je.mappers.TeacherMapper;
 import by.ita.je.models.Course;
+import by.ita.je.models.Recruiting;
 import by.ita.je.models.Registration;
+import by.ita.je.models.Teacher;
 import by.ita.je.service.BusinessCourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +23,7 @@ import java.util.List;
 public class BusinessController {
     private final BusinessCourseService businessCourseService;
     private final CourseMapper courseMapper;
+    private final TeacherMapper teacherMapper;
     private final RegistrationMapper registrationMapper;
 
 
@@ -97,5 +102,18 @@ public class BusinessController {
         return courseDtoList.stream()
                 .map(courseMapper::toWebDTO)
                 .toList();
+    }
+
+    @GetMapping("/read/teacher")
+    public TeacherWebDto teacherBySurname(String surname) {
+        Teacher teacher = businessCourseService.teacherBySurname(surname);
+
+        return teacherMapper.toWebDto(teacher);
+    }
+
+    @PostMapping("/recruiting/create")
+    public Recruiting createRecruiting(@RequestBody Recruiting recruiting) {
+
+        return businessCourseService.createRecruiting(recruiting);
     }
 }

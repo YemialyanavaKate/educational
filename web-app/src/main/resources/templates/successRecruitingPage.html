@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <title>Success recruiting page</title>
+</head>
+<body>
+<img th:src="@{/images/newCourse.png}"/><br>
+<h1>Announcement of recruitment for a course!</h1>
+
+<p><strong>Announcement of recruitment:</strong> <span th:text="${recruiting.description}"></span></p>
+
+<a th:href="@{/course/teacher}" id="teacher">
+  <button type="button">Go to your home page</button><br><br>
+</a>
+
+<a th:href="@{/course/home}" id="home">
+  <button type="button">Go to the main page</button><br><br>
+</a>
+</body>
+</html>

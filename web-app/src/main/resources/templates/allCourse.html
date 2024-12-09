@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <title>Title</title>
+  <style>
+    body{background-color: #FFFFE0;}
+  </style>
+</head>
+<body>
+<img th:src="@{/images/listCourses.jpg}"/><br>
+<table>
+  <thread>
+    <tr>
+      <th>Number</th>
+      <th>Name</th>
+      <th>Location</th>
+      <th>Price</th>
+      <th>Duration</th>
+      <th>Start</th>
+      <th>Stop</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thread>
+  <tbody>
+  <h1>All course</h1>
+
+  <tr th:if="${courses.empty}">
+<td cosplan="2">No courses</td>
+  </tr>
+<tr th:each="course: ${courses}">
+  <td><span th:text="${course.number}"></span></td>
+  <td><span th:text="${course.name}"></span></td>
+  <td><span th:text="${course.location}"></span></td>
+  <td><span th:text="${course.price}"></span></td>
+  <td><span th:text="${course.duration}"></span></td>
+  <td><span th:text="${course.start}"></span></td>
+  <td><span th:text="${course.stop}"></span></td>
+</tr>
+  </tbody>
+</table>
+<br>
+<a th:href="@{/course/home}" id="home">
+  <button type="button">Return to home page</button> </a>
+</body>
+</html>

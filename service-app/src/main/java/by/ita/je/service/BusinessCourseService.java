@@ -2,9 +2,13 @@ package by.ita.je.service;
 
 import by.ita.je.dto.to_data_base.CourseDto;
 import by.ita.je.dto.to_data_base.StudentDto;
+import by.ita.je.dto.to_web.TeacherWebDto;
 import by.ita.je.mappers.CourseMapper;
+import by.ita.je.mappers.TeacherMapper;
 import by.ita.je.models.Course;
+import by.ita.je.models.Recruiting;
 import by.ita.je.models.Registration;
+import by.ita.je.models.Teacher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -21,6 +25,8 @@ import java.util.*;
 public class BusinessCourseService {
     public static final String ROOT_COURSE = "/database/course";
     public static final String ROOT_STUDENT = "/database/student";
+    public static final String ROOT_TEACHER = "/database/teacher";
+    public static final String ROOT_RECRUITING = "/database/recruiting";
 
     public static final String METOD_READ = "/read/";
     public static final String METOD_READ_ALL = "/read/all";
@@ -30,9 +36,11 @@ public class BusinessCourseService {
     public static final String METOD_FILTER_CATEGORY = "/filter/category?numberCategory=";
     public static final String METOD_FILTER_PRICE = "/filter/price?price=";
     public static final String METOD_FILTER_DURATION = "/filter/duration?duration=";
+    public static final String METOD_FILTER_TEACHER_SURNAME = "/filter/surname?surname=";
 
     private final RestTemplate serviceAppRestClient;
     private final CourseMapper courseMapper;
+    private final TeacherMapper teacherMapper;
 
     public List<Course> readAll() {
         String urlReadALLCourse = String.format("%s%s", ROOT_COURSE, METOD_READ_ALL);
@@ -176,5 +184,21 @@ public class BusinessCourseService {
             serviceAppRestClient.delete(urlDeleteCourse);
         }
         return courseMapper.toEntity(courseDto);
+    }
+
+    public Teacher teacherBySurname(String surname) {
+        String urlTeacherBySurname = String.format("%s%s%s", ROOT_TEACHER, METOD_FILTER_TEACHER_SURNAME, surname);
+
+        ResponseEntity<List<TeacherWebDto>> responseEntity = serviceAppRestClient.exchange(urlTeacherBySurname, HttpMethod.GET, null, new ParameterizedTypeReference<>() {
+        });
+        List<TeacherWebDto> teacherWebDtoList = responseEntity.getBody() != null ?
+                responseEntity.getBody().stream().toList() : Collections.emptyList();
+        return teacherMapper.toEntityFromWebDto(teacherWebDtoList.get(0));
+    }
+
+    public Recruiting createRecruiting(Recruiting recruiting) {
+        String urlCreateRecruiting = String.format("%s%s", ROOT_RECRUITING, METOD_CREATE);
+        return serviceAppRestClient.postForObject(urlCreateRecruiting, recruiting, Recruiting.class);
+
     }
 }

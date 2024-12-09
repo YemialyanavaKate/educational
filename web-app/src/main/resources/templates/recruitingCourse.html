@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <title>Recruiting</title>
+</head>
+<body>
+<img th:src="@{/images/recruiting.png}"/><br>
+<h1>Please enter the text of the course recruitment announcement</h1>
+
+<form th:action="@{/course/create/recruiting}" th:object="${recruiting}" method="post">
+
+    <label for="description">Description:</label>
+    <input type="text" id="description" th:field="*{description}"/><br><br>
+
+    <button type="submit">Post an ad for a course</button><br>
+</form>
+<h2>Or return to your home page</h2>
+<a th:href="@{/course/teacher}" id="teacher">
+    <button type="button">Go to the home page</button> </a>
+<br>
+<h2>Or return to maim page</h2>
+<a th:href="@{/course/home}" id="home">
+    <button type="button">Go to the main page</button><br><br>
+</a>
+</body>
+</html>

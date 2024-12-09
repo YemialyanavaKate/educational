@@ -18,7 +18,6 @@ public class CourseWebDto {
     private Integer duration;
     private ZonedDateTime start;
     private ZonedDateTime stop;
-    @Singular
     private List<StudentWebDto> students;
     private TeacherWebDto teacher;
     private CategoryWebDto categoryWebDto;

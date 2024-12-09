@@ -39,6 +39,9 @@ public class TeacherMapper {
                 .number(teacher.getNumber())
                 .name(teacher.getName())
                 .surname(teacher.getSurname())
+                .login(teacher.getLogin())
+                .password(teacher.getPassword())
+                .role(teacher.getRole())
                 .build();
     }
 
@@ -48,6 +51,9 @@ public class TeacherMapper {
                 .number(teacherWebDto.getNumber())
                 .name(teacherWebDto.getName())
                 .surname(teacherWebDto.getSurname())
+                .login(teacherWebDto.getLogin())
+                .password(teacherWebDto.getPassword())
+                .role(teacherWebDto.getRole())
                 .build();
     }
 }
