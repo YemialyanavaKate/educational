@@ -17,6 +17,8 @@ public class StudentWebDto {
     private Integer number;
     private String name;
     private String surname;
+    private String login;
+    private String password;
     private String role;
     private BigDecimal balance;
     private List<CourseDto> courses;

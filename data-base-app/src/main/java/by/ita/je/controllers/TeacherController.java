@@ -50,4 +50,10 @@ public class TeacherController {
     public List<TeacherDto> deleteAll() {
         return teacherService.deleteAll().stream().map(teacherMapper::toDto).toList();
     }
+
+    @GetMapping("/filter/surname")
+    public List<TeacherDto> filterSurname(@RequestParam String surname) {
+        return teacherService.findByTeacherSurname(surname).stream().map(teacherMapper::toDto).toList();
+    }
+
 }

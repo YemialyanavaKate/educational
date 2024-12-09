@@ -40,6 +40,9 @@ public class StudentMapper {
                 .number(student.getNumber())
                 .name(student.getName())
                 .surname(student.getSurname())
+                .login(student.getLogin())
+                .password(student.getPassword())
+                .role(student.getRole())
                 .balance(student.getBalance())
                 .build();
     }
@@ -50,6 +53,9 @@ public class StudentMapper {
                 .number(studentWebDto.getNumber())
                 .name(studentWebDto.getName())
                 .surname(studentWebDto.getSurname())
+                .login(studentWebDto.getLogin())
+                .password(studentWebDto.getPassword())
+                .role(studentWebDto.getRole())
                 .balance(studentWebDto.getBalance())
                 .build();
     }

@@ -3,4 +3,4 @@ CREATE TABLE STUDENT (number INT PRIMARY KEY, name VARCHAR (255), surname VARCHA
 CREATE TABLE TEACHER (number INT PRIMARY KEY, name VARCHAR (255), surname VARCHAR (255), login VARCHAR (255), password VARCHAR (255), role VARCHAR (255));
 CREATE TABLE CATEGORY (number INT PRIMARY KEY, category VARCHAR (255));
 CREATE TABLE COURSE_STUDENT (course_number INT , student_number INT, PRIMARY KEY (course_number, student_number), FOREIGN KEY (course_number) REFERENCES COURSE(number), FOREIGN KEY (student_number) REFERENCES STUDENT(number));
-
+CREATE TABLE RECRUITING (number INT PRIMARY KEY, description VARCHAR (255));
