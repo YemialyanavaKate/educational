@@ -24,25 +24,30 @@ public class CourseWebService {
     public static final String ROOT_STUDENT = "/business/student";
     public static final String ROOT_TEACHER = "/business/teacher";
 
-    public static final String METOD_CREATE = "/create";
-    public static final String METOD_READ_ALL = "/read/all";
-    public static final String METOD_FILTER_BY_TEACHER = "/create/by/teacher?teacherSurname=";
-    public static final String METOD_READ_TEACHER = "/read/teacher?surname=";
-    public static final String METOD_CREATE_RECRUITING = "/recruiting/create";
-    public static final String METOD_DELETE = "/delete/";
+    public static final String METHOD_CREATE = "/create";
+    public static final String METHOD_READ_ALL = "/read/all";
+    public static final String METHOD_FILTER_BY_TEACHER = "/create/by/teacher?teacherSurname=";
+    public static final String METHOD_READ_TEACHER = "/read/teacher?surname=";
+    public static final String METHOD_CREATE_RECRUITING = "/recruiting/create";
+    public static final String METHOD_DELETE = "/delete/";
+    public static final String METHOD_FILTER_COMPLETED_COURSES = "/filter/by/completion?surname=";
+    public static final String METHOD_FILTER_UPCOMING_COURSES = "/filter/by/upcoming?surname=";
+    public static final String METHOD_FILTER_CATEGORY_COURSES = "/create/by/category/name?category=";
+
 
     public Course createCourse(Course course) {
+
         String surname = course.getTeacher().getSurname();
-        String urlReadTeachers = String.format("%s%s%s", ROOT_COURSE, METOD_READ_TEACHER, surname);
+        String urlReadTeachers = String.format("%s%s%s", ROOT_COURSE, METHOD_READ_TEACHER, surname);
 
         CourseWebDto courseWebDto = courseMapper.toWebDTO(course);
         //courseWebDto.setTeacher(teacherWebDto);
-        String urlCreate = String.format("%s%s", ROOT_COURSE, METOD_CREATE);
+        String urlCreate = String.format("%s%s", ROOT_COURSE, METHOD_CREATE);
         return courseMapper.toEntityFromWebDto(serviceAppRestClient.postForObject(urlCreate, courseWebDto, CourseWebDto.class));
     }
 
     public List<Course> readeAllCourse() {
-        String urlReadALLCourse = String.format("%s%s", ROOT_COURSE, METOD_READ_ALL);
+        String urlReadALLCourse = String.format("%s%s", ROOT_COURSE, METHOD_READ_ALL);
         ResponseEntity<List<CourseWebDto>> responseEntity = serviceAppRestClient.exchange(urlReadALLCourse, HttpMethod.GET, null, new ParameterizedTypeReference<>() {
         });
         List<CourseWebDto> courseWebDtoList = responseEntity.getBody() != null ?
@@ -53,7 +58,7 @@ public class CourseWebService {
     }
 
     public List<Course> filterByTeacher(String surname) {
-        String urlReadALLCourse = String.format("%s%s%s", ROOT_COURSE, METOD_FILTER_BY_TEACHER, surname);
+        String urlReadALLCourse = String.format("%s%s%s", ROOT_COURSE, METHOD_FILTER_BY_TEACHER, surname);
         ResponseEntity<List<CourseWebDto>> responseEntity = serviceAppRestClient.exchange(urlReadALLCourse, HttpMethod.POST, null, new ParameterizedTypeReference<>() {
         });
         List<CourseWebDto> courseWebDtoList = responseEntity.getBody() != null ?
@@ -64,12 +69,47 @@ public class CourseWebService {
     }
 
     public Recruiting createRecruiting(Recruiting recruiting) {
-        String urlCreateRecruiting = String.format("%s%s", ROOT_COURSE, METOD_CREATE_RECRUITING);
+        String urlCreateRecruiting = String.format("%s%s", ROOT_COURSE, METHOD_CREATE_RECRUITING);
         return serviceAppRestClient.postForObject(urlCreateRecruiting, recruiting, Recruiting.class);
     }
 
     public void deleteCourse(Integer number) {
-        String urlDeleteCourse = String.format("%s%s%d", ROOT_COURSE, METOD_DELETE, number);
+        String urlDeleteCourse = String.format("%s%s%d", ROOT_COURSE, METHOD_DELETE, number);
         serviceAppRestClient.delete(urlDeleteCourse);
     }
+
+    public List<Course> filterCompletedCourse(String surname) {
+        String urlReadCourses = String.format("%s%s%s", ROOT_COURSE, METHOD_FILTER_COMPLETED_COURSES, surname);
+        ResponseEntity<List<CourseWebDto>> responseEntity = serviceAppRestClient.exchange(urlReadCourses, HttpMethod.POST, null, new ParameterizedTypeReference<>() {
+        });
+        List<CourseWebDto> courseWebDtoList = responseEntity.getBody() != null ?
+                responseEntity.getBody().stream().toList() : Collections.emptyList();
+        return courseWebDtoList.stream()
+                .map(courseMapper::toEntityFromWebDto)
+                .toList();
+    }
+
+    public List<Course> filterUpcomingCourse(String surname) {
+
+
+        String urlReadCourses = String.format("%s%s%s", ROOT_COURSE, METHOD_FILTER_UPCOMING_COURSES, surname);
+        ResponseEntity<List<CourseWebDto>> responseEntity = serviceAppRestClient.exchange(urlReadCourses, HttpMethod.POST, null, new ParameterizedTypeReference<>() {
+        });
+        List<CourseWebDto> courseWebDtoList = responseEntity.getBody() != null ?
+                responseEntity.getBody().stream().toList() : Collections.emptyList();
+        return courseWebDtoList.stream()
+                .map(courseMapper::toEntityFromWebDto)
+                .toList();
+    }
+
+    public List<Course> filterByCategoryName(String category) {
+        String urlReadALLCourse = String.format("%s%s%s", ROOT_COURSE, METHOD_FILTER_CATEGORY_COURSES, category);
+        ResponseEntity<List<CourseWebDto>> responseEntity = serviceAppRestClient.exchange(urlReadALLCourse, HttpMethod.POST, null, new ParameterizedTypeReference<>() {});
+        List<CourseWebDto> courseWebDtoList = responseEntity.getBody() != null ?
+                responseEntity.getBody().stream().toList() : Collections.emptyList();
+        return courseWebDtoList.stream()
+                .map(courseMapper::toEntityFromWebDto)
+                .toList();
+    }
+
 }

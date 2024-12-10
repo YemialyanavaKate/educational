@@ -1,10 +1,13 @@
 package by.ita.je.services;
 
+import by.ita.je.models.Course;
 import by.ita.je.models.Student;
 import by.ita.je.repository.StudentCrudRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -53,5 +56,35 @@ public class StudentService {
     public List<Student> findAllStudentsByCourse(Integer number) {
         return StreamSupport.stream((studentCrudRepository.findStudentsByCourse(number)).spliterator(), false)
                 .collect(Collectors.toList());
+    }
+
+    public List<Course> findCompletedCourses(String surname) {
+
+        List<Student> studentList = StreamSupport
+                .stream((studentCrudRepository.findByStudentSurname(surname)).spliterator(), false).toList();
+        List<Course> courseList = studentList.get(0).getCourses();
+
+        List<Course> completedCourses = new ArrayList<>();
+        for (Course course : courseList) {
+            if (course.getStart().toLocalDate().isBefore(LocalDate.now())) {
+                completedCourses.add(course);
+            }
+        }
+        return completedCourses;
+    }
+
+    public List<Course> findUpcomingCourses(String surname) {
+
+        List<Student> studentList = StreamSupport
+                .stream((studentCrudRepository.findByStudentSurname(surname)).spliterator(), false).toList();
+        List<Course> courseList = studentList.get(0).getCourses();
+
+        List<Course> upcomingCourses = new ArrayList<>();
+        for (Course course : courseList) {
+            if (course.getStart().toLocalDate().isAfter(LocalDate.now())) {
+                upcomingCourses.add(course);
+            }
+        }
+        return upcomingCourses;
     }
 }

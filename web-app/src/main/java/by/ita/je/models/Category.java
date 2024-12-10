@@ -24,6 +24,4 @@ public class Category {
         MANAGEMENT
         }
 
-    //private List<Course> courses;
-
 }

@@ -55,6 +55,11 @@ public class CourseController {
         return courseService.findByCategory(numberCategory).stream().map(courseMapper::toDTO).toList();
     }
 
+    @GetMapping("/filter/category/name")
+    public List<CourseDto> filterCategoryName(@RequestParam String category) {
+        return courseService.findByCategoryName(category).stream().map(courseMapper::toDTO).toList();
+    }
+
     @GetMapping("/filter/price")
     public List<CourseDto> filterPrice(@RequestParam Integer price) {
         return courseService.findByPrice(price).stream().map(courseMapper::toDTO).toList();

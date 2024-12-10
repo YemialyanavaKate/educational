@@ -15,6 +15,7 @@ INSERT INTO COURSE_STUDENT (course_number, student_number) VALUES (1, 2);
 INSERT INTO COURSE_STUDENT (course_number, student_number) VALUES (2, 3);
 INSERT INTO COURSE_STUDENT (course_number, student_number) VALUES (2, 4);
 INSERT INTO COURSE_STUDENT (course_number, student_number) VALUES (2, 1);
+INSERT INTO COURSE_STUDENT (course_number, student_number) VALUES (4, 1);
 
 
 

@@ -17,4 +17,13 @@ public interface CourseCrudRepository extends CrudRepository<Course, Integer> {
 
     @Query(value = "SELECT * FROM COURSE C WHERE C.DURATION  <=:duration", nativeQuery = true)
     public Iterable<Course> findByDuration(@Param("duration") Integer duration);
+
+    @Query(value = "SELECT * FROM COURSE C WHERE C.CATEGORY_NUMBER IN" +
+            "(SELECT NUMBER FROM CATEGORY WHERE CATEGORY =:category)", nativeQuery = true)
+    public Iterable<Course> findByCategoryName(@Param("category") String category);
+
+
+
+
+
 }

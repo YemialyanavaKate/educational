@@ -12,6 +12,7 @@ import by.ita.je.models.Recruiting;
 import by.ita.je.models.Registration;
 import by.ita.je.models.Teacher;
 import by.ita.je.service.BusinessCourseService;
+import by.ita.je.service.BusinessStudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,9 +23,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BusinessController {
     private final BusinessCourseService businessCourseService;
+    private final BusinessStudentService businessStudentService;
     private final CourseMapper courseMapper;
     private final TeacherMapper teacherMapper;
     private final RegistrationMapper registrationMapper;
+
 
 
     @PutMapping("/update")
@@ -46,6 +49,15 @@ public class BusinessController {
     @PostMapping("/create/by/category")
     public List<CourseWebDto> courseByCategory(@RequestParam Integer numberCategory) {
         List<Course> courseList = businessCourseService.coursesByCategory(numberCategory);
+
+        return courseList.stream()
+                .map(courseMapper::toWebDTO)
+                .toList();
+    }
+
+    @PostMapping("/create/by/category/name")
+    public List<CourseWebDto> courseByCategoryName(@RequestParam String category) {
+        List<Course> courseList = businessCourseService.coursesByCategoryName(category);
 
         return courseList.stream()
                 .map(courseMapper::toWebDTO)
@@ -115,5 +127,23 @@ public class BusinessController {
     public Recruiting createRecruiting(@RequestBody Recruiting recruiting) {
 
         return businessCourseService.createRecruiting(recruiting);
+    }
+
+    @PostMapping("/filter/by/completion")
+    public List<CourseWebDto> studentCompletedCourse(@RequestParam String surname) {
+        List<Course> courseList = businessStudentService.studentCompletedCourses(surname);
+
+        return courseList.stream()
+                .map(courseMapper::toWebDTO)
+                .toList();
+    }
+
+    @PostMapping("/filter/by/upcoming")
+    public List<CourseWebDto> studentUpcomingCourse(@RequestParam String surname) {
+        List<Course> courseList = businessStudentService.studentUpcomingCourses(surname);
+
+        return courseList.stream()
+                .map(courseMapper::toWebDTO)
+                .toList();
     }
 }

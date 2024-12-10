@@ -9,6 +9,12 @@
 <h1><strong>Hello!</strong></h1>
 <img th:src="@{/images/home.png}"/><br>
 
+<a th:href="@{/course/category/name}" id="category">
+    <button type="button">Sort by category</button> </a><br><br>
+
+<a th:href="@{/course/lastname/home}" id="teacher">
+    <button type="button">Sort by teachers</button> </a><br><br>
+
 <a th:href="@{/course/read/all}" id="create">
     <button type="button">View all courses</button> </a><br><br>
 </body>

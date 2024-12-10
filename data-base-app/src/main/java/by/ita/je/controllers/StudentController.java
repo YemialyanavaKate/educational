@@ -1,7 +1,9 @@
 package by.ita.je.controllers;
 
 
+import by.ita.je.dto.CourseDto;
 import by.ita.je.dto.StudentDto;
+import by.ita.je.mappers.CourseMapper;
 import by.ita.je.mappers.StudentMapper;
 import by.ita.je.models.Student;
 import by.ita.je.services.StudentService;
@@ -16,6 +18,7 @@ import java.util.List;
 public class StudentController {
     private final StudentService studentService;
     private final StudentMapper studentMapper;
+    private final CourseMapper courseMapper;
 
     @PostMapping("/create")
     public StudentDto create(@RequestBody StudentDto studentDto) {
@@ -53,5 +56,15 @@ public class StudentController {
     @GetMapping("/filter/course")
     public List<StudentDto> findByCourse(Integer number) {
         return studentService.findAllStudentsByCourse(number).stream().map(studentMapper::toDto).toList();
+    }
+
+    @GetMapping("/filter/course/completed")
+    public List<CourseDto> findCompletedCourses(String surname) {
+        return studentService.findCompletedCourses(surname).stream().map(courseMapper::toDTO).toList();
+    }
+
+    @GetMapping("/filter/course/upcoming")
+    public List<CourseDto> findUpcomingCourses(String surname) {
+        return studentService.findUpcomingCourses(surname).stream().map(courseMapper::toDTO).toList();
     }
 }
