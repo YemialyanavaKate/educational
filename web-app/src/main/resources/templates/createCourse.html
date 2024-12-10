@@ -24,8 +24,15 @@
     <label for="duration">Course duration:</label>
     <input type="number" id="duration" th:field="*{duration}"/><br><br>
 
+    <label for="start">Start of the course:</label>
+    <input type="date" id="start" th:field="*{start}"/><br><br>
+
+    <label for="stop">Stop of the course:</label>
+    <input type="date" id="stop" th:field="*{stop}"/><br><br>
+
     <label for="surname">Your Last name:</label>
     <input type="text" id="surname" th:field="*{teacher.surname}"/><br><br>
+
 
     <button type="submit">Create</button><br><br>
 

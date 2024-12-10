@@ -66,4 +66,10 @@ public class CourseService {
         Iterable<Course> byDuration = courseCrudRepository.findByDuration(duration);
         return StreamSupport.stream(byDuration.spliterator(), false).collect(Collectors.toList());
     }
+
+    public List<Course> findByCategoryName (String category) {
+        Iterable<Course> byCategory = courseCrudRepository.findByCategoryName(category);
+        return StreamSupport.stream(byCategory.spliterator(), false).toList();
+    }
+
 }

@@ -34,6 +34,7 @@ public class BusinessCourseService {
     public static final String METOD_UPDATE = "/update";
     public static final String METOD_DELETE = "/delete/";
     public static final String METOD_FILTER_CATEGORY = "/filter/category?numberCategory=";
+    public static final String METOD_FILTER_CATEGORY_NAME = "/filter/category/name?category=";
     public static final String METOD_FILTER_PRICE = "/filter/price?price=";
     public static final String METOD_FILTER_DURATION = "/filter/duration?duration=";
     public static final String METOD_FILTER_TEACHER_SURNAME = "/filter/surname?surname=";
@@ -200,5 +201,17 @@ public class BusinessCourseService {
         String urlCreateRecruiting = String.format("%s%s", ROOT_RECRUITING, METOD_CREATE);
         return serviceAppRestClient.postForObject(urlCreateRecruiting, recruiting, Recruiting.class);
 
+    }
+
+    public List<Course> coursesByCategoryName(String category) {
+        String urlFilterByCategoryName = String.format("%s%s%s", ROOT_COURSE, METOD_FILTER_CATEGORY_NAME, category);
+
+        ResponseEntity<List<CourseDto>> responseEntity = serviceAppRestClient.exchange(urlFilterByCategoryName, HttpMethod.GET, null, new ParameterizedTypeReference<>() {});
+
+        List<CourseDto> courseDtoList = responseEntity.getBody() != null ?
+                responseEntity.getBody().stream().toList() : Collections.emptyList();
+        return courseDtoList.stream()
+                .map(courseMapper::toEntity)
+                .toList();
     }
 }

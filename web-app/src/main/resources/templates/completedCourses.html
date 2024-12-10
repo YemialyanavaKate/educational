@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <title>CompletedCourses</title>
+</head>
+<body>
+<img th:src="@{/images/Completed.png}"/><br>
+<table>
+  <thread>
+    <tr>
+      <th>Number</th>
+      <th>Name</th>
+      <th>Location</th>
+      <th>Price</th>
+      <th>Duration</th>
+      <th>Start</th>
+      <th>Stop</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thread>
+  <tbody>
+  <h1>Your completed courses</h1>
+
+  <tr th:if="${courses.empty}">
+    <td cosplan="2">No courses</td>
+  </tr>
+  <tr th:each="course: ${courses}">
+    <td><span th:text="${course.number}"></span></td>
+    <td><span th:text="${course.name}"></span></td>
+    <td><span th:text="${course.location}"></span></td>
+    <td><span th:text="${course.price}"></span></td>
+    <td><span th:text="${course.duration}"></span></td>
+    <td><span th:text="${course.start}"></span></td>
+    <td><span th:text="${course.stop}"></span></td>
+  </tr>
+  </tbody>
+</table>
+
+<br>
+<a th:href="@{/course/student}" id="teacher">
+  <button type="button">Go to the home page</button> </a><br><br>
+
+<a th:href="@{/course/home}" id="home">
+  <button type="button">Return to main page</button> </a>
+</body>
+</html>

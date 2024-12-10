@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <title>StudentPage</title>
+</head>
+<body>
+<h1>Hello Student!</h1>
+<img th:src="@{/images/student.jpg}" width="350" height="350" alt="teacher"/><br>
+<h2>Choose what you want to do</h2>
+
+<br>
+<a th:href="@{/course/lastname/student/completed}" id="completed">
+  <button type="button">Show my completed courses </button> </a><br><br>
+
+<a th:href="@{/course/lastname/student/upcoming}" id="upcoming">
+  <button type="button">Show my upcoming courses </button> </a><br><br>
+
+<a th:href="@{/course/home}" id="home">
+  <button type="button">Go to the main page</button> </a>
+<br><br>
+</body>
+</html>
