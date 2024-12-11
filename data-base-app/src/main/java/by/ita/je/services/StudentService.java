@@ -22,6 +22,10 @@ public class StudentService {
         return studentCrudRepository.findById(number).orElseThrow(() -> new NoSuchElementException(String.format("Student with number: %s not found", number)));
     }
 
+    public Student findBySurname(String surname) {
+        return StreamSupport.stream(studentCrudRepository.findByStudentSurname(surname).spliterator(), false).toList().get(0);
+    }
+
     public List<Student> readAll() {
         return StreamSupport.stream(studentCrudRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());

@@ -1,11 +1,16 @@
 package by.ita.je.controller;
 
 import by.ita.je.dto.CourseWebDto;
+import by.ita.je.dto.RegistrationWebDto;
 import by.ita.je.dto.StudentWebDto;
 import by.ita.je.dto.TeacherWebDto;
 import by.ita.je.mappers.CourseMapper;
+import by.ita.je.mappers.RegistrationMapper;
+import by.ita.je.mappers.StudentMapper;
 import by.ita.je.models.Course;
 import by.ita.je.models.Recruiting;
+import by.ita.je.models.Registration;
+import by.ita.je.models.Student;
 import by.ita.je.service.CourseWebService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -23,6 +28,8 @@ import java.util.List;
 public class CourseWebController {
     private final CourseWebService courseWebService;
     private final CourseMapper courseMapper;
+    private final RegistrationMapper registrationMapper;
+    private final StudentMapper studentMapper;
 
     @GetMapping("/home")
     public String showHomePage() {
@@ -173,5 +180,34 @@ public class CourseWebController {
                 .toList();
         model.addAttribute("courses", courseWebDtoList);
         return "allCourse.html";
+    }
+
+    @GetMapping("/add/student")
+    public String showAddStudentToCourseForm(Model model) {
+        model.addAttribute("registration", new RegistrationWebDto());
+        return "addStudentToCourse.html";
+    }
+
+    @PostMapping("/add/student")
+    public String AddStudentToCourse(@ModelAttribute RegistrationWebDto registrationWebDto, Model model) {
+        Registration registration = registrationMapper.toEntity(registrationWebDto);
+        Course courseWithStudent = courseWebService.addStudentToCourse(registration);
+        CourseWebDto courseWithStudentWebDto = courseMapper.toWebDTO(courseWithStudent);
+        model.addAttribute("course", courseWithStudentWebDto);
+        return "successAddStudentToCourse.html";
+    }
+
+    @GetMapping("/read/student")
+    public String showFormForSurname(Model model) {
+        model.addAttribute("student", new StudentWebDto());
+        return "forStudentSurname.html";
+    }
+
+    @PostMapping("/read/student")
+    public String showStudentProfile (String surname, Model model) {
+        Student student = courseWebService.readStudentBySurName(surname);
+        StudentWebDto studentWebDto = studentMapper.toWebDto(student);
+        model.addAttribute("student", studentWebDto);
+        return "studentBySurname.html";
     }
 }

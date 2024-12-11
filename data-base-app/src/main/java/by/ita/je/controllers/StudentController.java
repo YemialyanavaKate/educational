@@ -32,6 +32,11 @@ public class StudentController {
         return studentMapper.toDto(studentService.findByNumber(number));
     }
 
+    @GetMapping("/read/by/surname/{surname}")
+    public StudentDto readBuSurname(@PathVariable(name = "surname") String surname) {
+        return studentMapper.toDto(studentService.findBySurname(surname));
+    }
+
     @GetMapping("/read/all")
     public List<StudentDto> readAll() {
         return studentService.readAll().stream().map(studentMapper::toDto).toList();
