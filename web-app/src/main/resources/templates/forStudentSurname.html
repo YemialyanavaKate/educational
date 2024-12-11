@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <title>For student surname</title>
+</head>
+<body>
+<h1>If you want to see your profile enter data please</h1>
+<h2>Please enter details</h2>
+<img th:src="@{/images/dataEntry.jpg}" width="300" height="200"/><br>
+
+<form th:action="@{/course/read/student}" th:object="${student}" method="post">
+
+    <label for="name">Enter your first name:</label>
+    <input type="text" id="name" th:field="*{name}"/><br><br>
+
+    <label for="surname">Enter your Last name:</label>
+    <input type="text" id="surname" th:field="*{surname}"/><br><br>
+
+    <button type="submit">Enter</button><br><br>
+
+    <a th:href="@{/course/student}" id="student">
+        <button type="button">Go to your home page</button><br><br>
+    </a>
+
+    <a th:href="@{/course/home}" id="home">
+        <button type="button">Go to the main page</button><br><br>
+    </a>
+
+</form>
+</body>
+</html>

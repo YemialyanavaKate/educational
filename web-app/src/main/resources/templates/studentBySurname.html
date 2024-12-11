@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <title>Student profile</title>
+</head>
+<body>
+<h1>You see your profile!</h1>
+<img th:src="@{/images/studentProfileX.jpg}" width="350" height="350"/><br>
+<p><strong>Your first Name:</strong> <span th:text="${student.name}"></span></p>
+<p><strong>Your last Name:</strong> <span th:text="${student.surname}"></span></p>
+<p><strong>Your balance:</strong> <span th:text="${student.balance}"></span></p>
+
+<a th:href="@{/course/student}" id="student">
+    <button type="button">Go to your home page</button><br><br>
+</a>
+
+<a th:href="@{/course/home}" id="home">
+    <button type="button">Go to the main page</button><br><br>
+</a>
+</body>
+</html>

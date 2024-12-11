@@ -1,14 +1,17 @@
 package by.ita.je.service;
 
 import by.ita.je.dto.to_data_base.CourseDto;
+import by.ita.je.dto.to_data_base.StudentDto;
 import by.ita.je.mappers.CourseMapper;
 import by.ita.je.mappers.StudentMapper;
 import by.ita.je.models.Course;
+import by.ita.je.models.Student;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
@@ -19,7 +22,7 @@ public class BusinessStudentService {
     public static final String ROOT_COURSE = "http://localhost:8101/database/course";
     public static final String ROOT_STUDENT = "http://localhost:8101/database/student";
 
-    public static final String METOD_READ = "/read/";
+    public static final String METOD_READ = "/read/by/surname/";
     public static final String METOD_READ_ALL = "/read/all";
     public static final String METOD_CREATE = "/create";
     public static final String METOD_UPDATE = "/update";
@@ -33,6 +36,11 @@ public class BusinessStudentService {
     private final RestTemplate serviceAppRestClient;
     private final CourseMapper courseMapper;
     private final StudentMapper studentMapper;
+
+    public Student readStudent(String surname) throws HttpServerErrorException.InternalServerError {
+        String urlRedStudent = String.format("%s%s%s", ROOT_STUDENT, METOD_READ, surname);
+        return studentMapper.toEntityFromDataBase(serviceAppRestClient.getForObject(urlRedStudent, StudentDto.class));
+    }
 
     public List<Course> studentCompletedCourses(String surname) {
         String urlFilterCompletedCourses = String.format("%s%s%s", ROOT_STUDENT, METOD_FILTER_COMPLETED_COURSES, surname);

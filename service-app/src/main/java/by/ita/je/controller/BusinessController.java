@@ -3,14 +3,13 @@ package by.ita.je.controller;
 import by.ita.je.dto.to_data_base.CourseDto;
 import by.ita.je.dto.to_web.CourseWebDto;
 import by.ita.je.dto.to_web.RegistrationWebDto;
+import by.ita.je.dto.to_web.StudentWebDto;
 import by.ita.je.dto.to_web.TeacherWebDto;
 import by.ita.je.mappers.CourseMapper;
 import by.ita.je.mappers.RegistrationMapper;
+import by.ita.je.mappers.StudentMapper;
 import by.ita.je.mappers.TeacherMapper;
-import by.ita.je.models.Course;
-import by.ita.je.models.Recruiting;
-import by.ita.je.models.Registration;
-import by.ita.je.models.Teacher;
+import by.ita.je.models.*;
 import by.ita.je.service.BusinessCourseService;
 import by.ita.je.service.BusinessStudentService;
 import lombok.RequiredArgsConstructor;
@@ -27,15 +26,15 @@ public class BusinessController {
     private final CourseMapper courseMapper;
     private final TeacherMapper teacherMapper;
     private final RegistrationMapper registrationMapper;
+    private final StudentMapper studentMapper;
 
 
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public CourseWebDto registrationForCourse(@RequestBody RegistrationWebDto registrationWebDto) {
         Registration registration = registrationMapper.toEntity(registrationWebDto);
         Course course = businessCourseService.findCourseAndAddStudent(registration);
-        CourseWebDto courseWebDto = courseMapper.toWebDTO(course);
-        return courseWebDto;
+        return courseMapper.toWebDTO(course);
     }
 
 
@@ -145,5 +144,12 @@ public class BusinessController {
         return courseList.stream()
                 .map(courseMapper::toWebDTO)
                 .toList();
+    }
+
+    @GetMapping("/read/student")
+    public StudentWebDto studentBySurname(String surname) {
+        Student student = businessStudentService.readStudent(surname);
+
+        return studentMapper.toWebDto(student);
     }
 }
