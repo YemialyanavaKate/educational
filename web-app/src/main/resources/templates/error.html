@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+    <title>ERROR</title>
+</head>
+<body>
+<h1><strong>Don't worry!</strong></h1>
+<h1>You see an error message</h1>
+<form th:object="${errorDetails}" method="post">
+
+    <label for="timestamp">Error timestamp:</label>
+    <textarea id="timestamp" th:field="*{timestamp}" rows="1" cols="40">Error timestamp:</textarea><br><br>
+
+    <label for="message">Error message:</label>
+    <textarea id="message" th:field="*{message}" rows="3" cols="50">Error message:</textarea><br><br>
+
+    <label for="statusCode">StatusCode:</label>
+    <input type="text" id="statusCode" th:field="*{statusCode}"/><br><br>
+
+<a th:href="@{/course/home}" id="home">
+    <button type="button">Go to the main page</button> </a>
+</form>
+<br><br>
+</body>
+</html>

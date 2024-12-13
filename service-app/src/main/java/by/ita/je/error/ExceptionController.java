@@ -14,21 +14,20 @@ public class ExceptionController {
 
     @ExceptionHandler(HttpServerErrorException.class)
     public ResponseEntity<Object> handleHttpServerErrorException(HttpServerErrorException ex) {
-        ErrorDetails  errorDetails  =  new  ErrorDetails ( new Date(), ex.getMessage());
+        ErrorDetails  errorDetails  =  new  ErrorDetails ( new Date(), ex.getMessage(), ex.getStatusCode());
         return  new  ResponseEntity <>(errorDetails, ex.getStatusCode());
     }
 
     @ExceptionHandler(HttpClientErrorException.class)
     public ResponseEntity<Object> handleHttpClientErrorException(HttpClientErrorException ex) {
-        ErrorDetails  errorDetails  =  new  ErrorDetails ( new Date(), ex.getMessage());
+        ErrorDetails  errorDetails  =  new  ErrorDetails ( new Date(), ex.getMessage(), ex.getStatusCode());
         return  new  ResponseEntity <>(errorDetails, ex.getStatusCode());
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleException(Exception ex) {
-        ErrorDetails  errorDetails  =  new  ErrorDetails ( new Date(), ex.getMessage());
+        ErrorDetails  errorDetails  =  new  ErrorDetails ( new Date(), ex.getMessage(), null);
         return  new  ResponseEntity <>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
 
 }

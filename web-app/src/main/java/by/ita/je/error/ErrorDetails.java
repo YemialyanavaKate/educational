@@ -13,7 +13,7 @@ public class ErrorDetails {
     private String message;
     private HttpStatus statusCode;
 
-    public  ErrorDetails (Date timestamp, String message, HttpStatus statusCode) {
+    public ErrorDetails(Date timestamp, String message, HttpStatus statusCode) {
         this.timestamp = timestamp;
         this.message = message;
         this.statusCode = statusCode;
