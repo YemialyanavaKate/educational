@@ -15,4 +15,7 @@ public interface StudentCrudRepository extends CrudRepository<Student, Integer> 
 
     @Query(value = "SELECT * FROM STUDENT S WHERE S.SURNAME =:surname", nativeQuery = true)
      Iterable<Student> findByStudentSurname(@Param("surname") String surname);
+
+     @Query(value = "SELECT * FROM STUDENT S WHERE S.LOGIN =:login", nativeQuery = true)
+    Iterable<Student> findByLogin(@Param("login") String login);
 }

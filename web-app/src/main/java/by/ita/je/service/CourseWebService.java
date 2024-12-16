@@ -3,13 +3,12 @@ package by.ita.je.service;
 import by.ita.je.dto.CourseWebDto;
 import by.ita.je.dto.RegistrationWebDto;
 import by.ita.je.dto.StudentWebDto;
+import by.ita.je.dto.TeacherWebDto;
 import by.ita.je.mappers.CourseMapper;
 import by.ita.je.mappers.RegistrationMapper;
 import by.ita.je.mappers.StudentMapper;
-import by.ita.je.models.Course;
-import by.ita.je.models.Recruiting;
-import by.ita.je.models.Registration;
-import by.ita.je.models.Student;
+import by.ita.je.mappers.TeacherMapper;
+import by.ita.je.models.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -27,14 +26,15 @@ public class CourseWebService {
     private final CourseMapper courseMapper;
     private final RegistrationMapper registrationMapper;
     private final StudentMapper studentMapper;
+    private final TeacherMapper teacherMapper;
 
     public static final String ROOT_COURSE = "/business/course";
-    public static final String ROOT_STUDENT = "/business/student";
-    public static final String ROOT_TEACHER = "/business/teacher";
 
     public static final String METHOD_CREATE = "/create";
     public static final String METHOD_READ_ALL = "/read/all";
+    public static final String METHOD_READ_TEACHER_BY_SURNAME = "/read/teacher?surname=";
     public static final String METHOD_READ_STUDENT_BY_SURNAME = "/read/student?surname=";
+    public static final String METHOD_READ_STUDENT_BY_LOGIN = "/read/student?login=";
     public static final String METHOD_UPDATE = "/update";
     public static final String METHOD_FILTER_BY_TEACHER = "/create/by/teacher?teacherSurname=";
     public static final String METHOD_READ_TEACHER = "/read/teacher?surname=";
@@ -132,14 +132,24 @@ public class CourseWebService {
     }
 
     public Student readStudentBySurName(String surname) {
-
         String urlReadStudent = String.format("%s%s%s", ROOT_COURSE, METHOD_READ_STUDENT_BY_SURNAME, surname);
-        /*ResponseEntity<Student> responseEntity = serviceAppRestClient.exchange(urlReadStudent, HttpMethod.POST, null, new ParameterizedTypeReference<>() {});
-        return responseEntity.getBody();*/
-
         StudentWebDto studentWebDto = serviceAppRestClient.getForObject(urlReadStudent, StudentWebDto.class);
+
         return studentMapper.toEntityFromWebDto(studentWebDto);
     }
 
+    public Student readStudentByLogin(String login) {
+        String urlReadStudentByLogin = String.format("%s%s%s", ROOT_COURSE, METHOD_READ_STUDENT_BY_LOGIN, login);
+        StudentWebDto studentWebDto = serviceAppRestClient.getForObject(urlReadStudentByLogin, StudentWebDto.class);
+
+        return studentMapper.toEntityFromWebDto(studentWebDto);
+    }
+
+    public Teacher readTeacherBySurName(String surname) {
+        String urlReadTeacher = String.format("%s%s%s", ROOT_COURSE, METHOD_READ_TEACHER, surname);
+        TeacherWebDto teacherWebDto = serviceAppRestClient.getForObject(urlReadTeacher, TeacherWebDto.class);
+
+        return teacherMapper.toEntityFromWebDto(teacherWebDto);
+    }
 
 }

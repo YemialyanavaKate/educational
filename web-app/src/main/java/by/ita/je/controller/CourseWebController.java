@@ -13,6 +13,7 @@ import by.ita.je.models.Registration;
 import by.ita.je.models.Student;
 import by.ita.je.service.CourseWebService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -37,6 +43,7 @@ public class CourseWebController {
     }
 
     @GetMapping("/teacher")
+    @PreAuthorize("hasAuthority('teacher')")
     public String showTeacherPage() {
         return "teacherPage.html";
     }
@@ -67,7 +74,6 @@ public class CourseWebController {
         model.addAttribute("courses", courseWebDtoList);
         return "allCourse.html";
     }
-
 
     @GetMapping("/create")
     public String showCreateCourseForm(Model model) {
@@ -114,18 +120,20 @@ public class CourseWebController {
     }
 
     @GetMapping("/student")
+    @PreAuthorize("hasAuthority('student')")
     public String showStudentPage() {
         return "studentPage.html";
     }
 
-    @GetMapping("/lastname/student/completed")
+    /*@GetMapping("/lastname/student/completed")
     public String showFilterCourseByCompletedForStudent(Model model) {
         model.addAttribute("student", new StudentWebDto());
         return "studentLastNameForCompletedCourses.html";
-    }
+    }*/
 
-    @PostMapping("/filter/by/completed")
-    public String showFilterCompletedCourse(String surname, Model model) {
+    @GetMapping("/lastname/student/completed")
+    public String showFilterCompletedCourse(Model model, Principal principal) {
+        String surname = principal.getName();
         List<CourseWebDto> courseWebDtoList = courseWebService.filterCompletedCourse(surname)
                 .stream()
                 .map(courseMapper::toWebDTO)
@@ -134,14 +142,15 @@ public class CourseWebController {
         return "completedCourses.html";
     }
 
-    @GetMapping("/lastname/student/upcoming")
+    /*@GetMapping("/lastname/student/upcoming")
     public String showFilterCourseByUpcomingForStudent(Model model) {
         model.addAttribute("student", new StudentWebDto());
         return "studentLastNameForUpcomingCourses.html";
     }
-
-    @PostMapping("/filter/by/upcoming")
-    public String showFilterUpcomingCourse(String surname, Model model) {
+*/
+    @GetMapping("/lastname/student/upcoming")
+    public String showFilterUpcomingCourse(Model model, Principal principal) {
+        String surname = principal.getName();
         List<CourseWebDto> courseWebDtoList = courseWebService.filterUpcomingCourse(surname)
                 .stream()
                 .map(courseMapper::toWebDTO)
@@ -197,17 +206,41 @@ public class CourseWebController {
         return "successAddStudentToCourse.html";
     }
 
-    @GetMapping("/read/student")
+   /* @GetMapping("/read/student")
     public String showFormForSurname(Model model) {
         model.addAttribute("student", new StudentWebDto());
         return "forStudentSurname.html";
-    }
+    }*/
 
-    @PostMapping("/read/student")
-    public String showStudentProfile (String surname, Model model) {
+    @GetMapping("/read/student")
+    public String showStudentProfile (Model model, Principal principal) {
+        String surname = principal.getName();
         Student student = courseWebService.readStudentBySurName(surname);
         StudentWebDto studentWebDto = studentMapper.toWebDto(student);
         model.addAttribute("student", studentWebDto);
         return "studentBySurname.html";
+    }
+
+    /*@GetMapping("/logout")
+    public String showLogoutPage (Model model, Principal principal) {
+        String surname = principal.getName();
+        Student student = courseWebService.readStudentBySurName(surname);
+        StudentWebDto studentWebDto = studentMapper.toWebDto(student);
+        model.addAttribute("student", studentWebDto);
+        return "studentBySurname.html";
+    }*/
+
+    @GetMapping("/logout")
+    private String removeCookies(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+
+        Cookie rememberMeCookie = new Cookie("remember-me", "");
+
+        rememberMeCookie.setMaxAge(0);
+
+        response.addCookie(rememberMeCookie);
+
+        request.logout();
+
+        return "homePage.html";
     }
 }
