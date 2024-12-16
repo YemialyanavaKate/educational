@@ -152,4 +152,11 @@ public class BusinessController {
 
         return studentMapper.toWebDto(student);
     }
+
+    @GetMapping("/read/student/by/login")
+    public StudentWebDto studentByLogin(@RequestParam String login) {
+        Student student = businessStudentService.findByLogin(login);
+
+        return studentMapper.toWebDto(student);
+    }
 }

@@ -19,16 +19,11 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 public class BusinessStudentService {
-    public static final String ROOT_COURSE = "http://localhost:8101/database/course";
     public static final String ROOT_STUDENT = "http://localhost:8101/database/student";
 
     public static final String METOD_READ = "/read/by/surname/";
-    public static final String METOD_READ_ALL = "/read/all";
-    public static final String METOD_CREATE = "/create";
-    public static final String METOD_UPDATE = "/update";
-    public static final String METOD_DELETE = "/delete";
-    public static final String METOD_FILTER_CATEGORY_NAME = "/filter/category/name?category=";
-    public static final String METOD_FILTER_PRICE = "/filter/price?price=";
+    public static final String METOD_READ_BY_LOGIN = "/read/by/login/";
+
     public static final String METOD_FILTER_COMPLETED_COURSES = "/filter/course/completed?surname=";
     public static final String METOD_FILTER_UPCOMING_COURSES = "/filter/course/upcoming?surname=";
 
@@ -66,5 +61,10 @@ public class BusinessStudentService {
         return listCourseDto.stream()
                 .map(courseMapper::toEntity)
                 .toList();
+    }
+
+    public Student findByLogin(String login) throws HttpServerErrorException.InternalServerError {
+        String urlRedStudent = String.format("%s%s%s", ROOT_STUDENT, METOD_READ_BY_LOGIN, login);
+        return studentMapper.toEntityFromDataBase(serviceAppRestClient.getForObject(urlRedStudent, StudentDto.class));
     }
 }

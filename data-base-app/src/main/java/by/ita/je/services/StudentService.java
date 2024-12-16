@@ -23,9 +23,17 @@ public class StudentService {
     }
 
     public Student findBySurname(String surname) {
+
         return StreamSupport.stream(studentCrudRepository.findByStudentSurname(surname).spliterator(), false).toList().get(0);
     }
 
+   /* public Student findBySurnameNew(String surname) {
+        return studentCrudRepository.findBySurnameNew(surname);
+    }*/
+
+    public Student findByLogin(String login) {
+        return StreamSupport.stream(studentCrudRepository.findByLogin(login).spliterator(), false).toList().get(0);
+    }
     public List<Student> readAll() {
         return StreamSupport.stream(studentCrudRepository.findAll().spliterator(), false)
                 .collect(Collectors.toList());
